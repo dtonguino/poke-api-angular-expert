@@ -1,0 +1,17 @@
+<div class="min-h-screen bg-gradient-to-b from-red-50 to-white">
+  <!-- Top -->
+  <div class="flex justify-between items-center p-4 bg-white shadow-sm">
+    <h2 class="text-xl font-bold text-gray-800">Pokémon Types</h2>
+    <div class="flex items-center gap-4">
+    </div>
+  </div>
+  <!-- Main Content Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4 max-w-7xl mx-auto">
+    @for (type of (types$ | async)?.results; track type.name) {
+    <div class="p-4 text-center capitalize rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+      [ngClass]="getTypeColor(type.name)">
+      <span class="text-white font-medium text-lg">{{ type.name }}</span>
+    </div>
+    }
+  </div>
+</div>

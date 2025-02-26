@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
 	selector: 'app-root',
@@ -8,8 +9,17 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 	styleUrl: './app.component.css'
 })
 export class AppComponent {
-	isMobileMenuOpen = false;
+	private router = inject(Router);
+	isMobileMenuOpen = signal(false);
+	currentRoute = signal('');
+
+	ngOnInit() {
+		this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+			this.currentRoute.set(event.urlAfterRedirects);
+		});
+	}
+
 	toggleMobileMenu() {
-		this.isMobileMenuOpen = !this.isMobileMenuOpen;
+		this.isMobileMenuOpen.update((state) => !state);
 	}
 }

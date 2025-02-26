@@ -10,20 +10,55 @@
             class="w-60 h-16 hover:scale-105 transition-transform duration-300 cursor-pointer">
         </a>
       </div>
+      <!-- Menú de navegación en desktop -->
+      <nav class="hidden md:flex space-x-6">
+        <a routerLink="/pokemon" class="px-4 py-2 rounded-md transition-all duration-300"
+          [class.bg-red-700]="currentRoute() === '/pokemon'"
+          [class.hover:bg-red-600]="currentRoute() !== '/pokemon'">Pokédex</a>
 
+        <a routerLink="/types" class="px-4 py-2 rounded-md transition-all duration-300"
+          [class.bg-red-700]="currentRoute() === '/types'"
+          [class.hover:bg-red-600]="currentRoute() !== '/types'">Types</a>
+
+        <a routerLink="/abilities" class="px-4 py-2 rounded-md transition-all duration-300"
+          [class.bg-red-700]="currentRoute() === '/abilities'"
+          [class.hover:bg-red-600]="currentRoute() !== '/abilities'">Abilities</a>
+
+        <a routerLink="/colors" class="px-4 py-2 rounded-md transition-all duration-300"
+          [class.bg-red-700]="currentRoute() === '/colors'"
+          [class.hover:bg-red-600]="currentRoute() !== '/colors'">Colors</a>
+      </nav>
       <!-- Menú responsivo (solo ícono) -->
       <button class="md:hidden text-white text-2xl focus:outline-none hover:text-red-100 transition-colors"
         (click)="toggleMobileMenu()">
         &#9776;
       </button>
     </div>
-  </header>
+    <!-- Menú desplegable para móviles usando @if -->
+    @if (isMobileMenuOpen()) {
+    <div class="md:hidden bg-red-600 text-white mt-2 py-2 shadow-lg">
+      <a routerLink="/pokemon" class="block px-6 py-2 rounded-md transition-all duration-300"
+        [class.bg-red-800]="currentRoute() === '/pokemon'"
+        [class.hover:bg-red-700]="currentRoute() !== '/pokemon'">Pokédex</a>
 
+      <a routerLink="/types" class="block px-6 py-2 rounded-md transition-all duration-300"
+        [class.bg-red-800]="currentRoute() === '/types'"
+        [class.hover:bg-red-700]="currentRoute() !== '/types'">Types</a>
+
+      <a routerLink="/abilities" class="block px-6 py-2 rounded-md transition-all duration-300"
+        [class.bg-red-800]="currentRoute() === '/abilities'"
+        [class.hover:bg-red-700]="currentRoute() !== '/abilities'">Abilities</a>
+
+      <a routerLink="/colors" class="block px-6 py-2 rounded-md transition-all duration-300"
+        [class.bg-red-800]="currentRoute() === '/colors'"
+        [class.hover:bg-red-700]="currentRoute() !== '/colors'">Colors</a>
+    </div>
+    }
+  </header>
   <!-- Contenido dinámico con router-outlet -->
   <main class="flex-grow container mx-auto px-4 py-8">
     <router-outlet></router-outlet>
   </main>
-
   <!-- Footer -->
   <footer class="bg-gray-800 text-white py-6 mt-auto">
     <div class="container mx-auto px-4">

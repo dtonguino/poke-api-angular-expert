@@ -1,17 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { BehaviorSubject, combineLatest, switchMap } from 'rxjs';
 import { PokemonService } from '../../services/pokemon.service';
 
 @Component({
-	selector: 'app-pokemon-list',
-	imports: [CommonModule, RouterLink],
-	templateUrl: './pokemon-list.component.html',
-	styleUrl: './pokemon-list.component.css',
+	selector: 'app-pokemon-abilities-list',
+	imports: [CommonModule],
+	templateUrl: './pokemon-abilities-list.component.html',
+	styleUrl: './pokemon-abilities-list.component.css',
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PokemonListComponent {
+export class PokemonAbilitiesListComponent {
 	private readonly pokemonService = inject(PokemonService);
 	private offset$ = new BehaviorSubject<number>(0);
 	private limit = 20;
@@ -19,7 +18,7 @@ export class PokemonListComponent {
 	constructor() {}
 
 	pagination$ = combineLatest({
-		pokemons: this.offset$.pipe(switchMap((offset) => this.pokemonService.getPokemons(offset, this.limit))),
+		abilities: this.offset$.pipe(switchMap((offset) => this.pokemonService.getPokemonAbilities(offset, this.limit))),
 		offset: this.offset$
 	});
 
