@@ -1,0 +1,123 @@
+<!-- pokemon-detail.component.html -->
+@defer (when pokemon && !error; on immediate) {
+<div class="max-w-4xl mx-auto p-6">
+  <!-- Header Section -->
+  <div class="text-center mb-8">
+    <h1 class="text-4xl font-bold text-gray-800 mb-2 capitalize">
+      {{ pokemon.name }}
+      <span class="text-2xl text-gray-600 ml-2">#{{ pokemon.id }}</span>
+    </h1>
+
+    <!-- Types -->
+    <div class="flex justify-center gap-2 mb-4">
+      @for (type of pokemon.types; track $index) {
+      <span class="px-4 py-1 rounded-full text-white text-sm font-medium capitalize"
+        [class]="getTypeColor(type.type.name)">
+        {{ type.type.name }}
+      </span>
+      }
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="grid md:grid-cols-2 gap-8">
+    <!-- Images Section -->
+    <div class="space-y-6">
+      <div class="bg-white rounded-xl p-6 shadow-lg">
+        <img [src]="pokemon.sprites.other['official-artwork'].front_default" [alt]="pokemon.name"
+          class="w-full h-64 object-contain" />
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-white rounded-xl p-4 shadow-lg text-center">
+          <img [src]="pokemon.sprites.front_default" [alt]="'Front ' + pokemon.name"
+            class="w-full h-32 object-contain" />
+          <p class="mt-2 text-sm text-gray-600">Normal Front</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 shadow-lg text-center">
+          <img [src]="pokemon.sprites.back_default" [alt]="'Back ' + pokemon.name" class="w-full h-32 object-contain" />
+          <p class="mt-2 text-sm text-gray-600">Normal Back</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="space-y-6">
+      <!-- Physical Traits -->
+      <div class="bg-white rounded-xl p-6 shadow-lg">
+        <h2 class="text-xl font-semibold mb-4 text-gray-800">Physical Traits</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="text-center">
+            <p class="text-sm text-gray-600">Height</p>
+            <p class="text-lg font-medium">{{ pokemon.height / 10 }} m</p>
+          </div>
+          <div class="text-center">
+            <p class="text-sm text-gray-600">Weight</p>
+            <p class="text-lg font-medium">{{ pokemon.weight / 10 }} kg</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Base Stats -->
+      <div class="bg-white rounded-xl p-6 shadow-lg">
+        <h2 class="text-xl font-semibold mb-4 text-gray-800">Base Stats</h2>
+        <div class="space-y-3">
+          @for (stat of pokemon.stats; track $index) {
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="text-sm font-medium capitalize text-gray-700">
+                {{ statName(stat.stat.name) }}
+              </span>
+              <span class="text-sm text-gray-600">{{ stat.base_stat }}/255</span>
+            </div>
+            <div class="h-2 bg-gray-200 rounded-full">
+              <div class="h-2 rounded-full bg-blue-500" [style.width.%]="(stat.base_stat / 255) * 100"></div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- Abilities -->
+      <div class="bg-white rounded-xl p-6 shadow-lg">
+        <h2 class="text-xl font-semibold mb-4 text-gray-800">Abilities</h2>
+        <div class="flex flex-wrap gap-2">
+          @for (ability of pokemon.abilities; track $index) {
+          <span class="px-3 py-1 bg-gray-100 rounded-full text-sm capitalize">
+            {{ ability.ability.name }}
+          </span>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back Button -->
+  <div class="mt-8 text-center">
+    <a routerLink="/"
+      class="inline-flex items-center px-6 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-lg transition-colors">
+      ← Back to Pokedex
+    </a>
+  </div>
+</div>
+} @placeholder (minimum 500ms) {
+<!-- Placeholder mientras se carga -->
+<div class="flex justify-center items-center h-screen">
+  <div class="animate-spin rounded-full h-12 w-12 border-4 border-t-transparent border-blue-500"></div>
+</div>
+} @loading (minimum 2s) {
+<!-- Estado de carga -->
+<div class="flex justify-center items-center h-screen">
+  <div class="animate-spin rounded-full h-12 w-12 border-4 border-t-transparent border-blue-500"></div>
+</div>
+} @error {
+<!-- Manejo de errores -->
+<div class="text-center p-8">
+  <div class="text-red-500 text-4xl mb-4">⚠️</div>
+  <h2 class="text-2xl font-semibold text-gray-800 mb-4">Pokémon not found!</h2>
+  <a routerLink="/"
+    class="inline-flex items-center px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+    ← Back to Pokedex
+  </a>
+</div>
+}

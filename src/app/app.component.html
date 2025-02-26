@@ -1,3 +1,38 @@
-<h1 class="text-3xl font-bold underline">
-  Hello world!
-</h1>
+<!-- Contenedor principal -->
+<div class="min-h-screen flex flex-col bg-gradient-to-b from-red-50 to-white">
+  <!-- Navbar -->
+  <header class="bg-red-500 text-white py-4 px-6 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+      <!-- Logotipo con redirección a la página principal -->
+      <div class="flex items-center space-x-3">
+        <a routerLink="/">
+          <img src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi.svg" alt="PokeApp Logo"
+            class="w-60 h-16 hover:scale-105 transition-transform duration-300 cursor-pointer">
+        </a>
+      </div>
+
+      <!-- Menú responsivo (solo ícono) -->
+      <button class="md:hidden text-white text-2xl focus:outline-none hover:text-red-100 transition-colors"
+        (click)="toggleMobileMenu()">
+        &#9776;
+      </button>
+    </div>
+  </header>
+
+  <!-- Contenido dinámico con router-outlet -->
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6 mt-auto">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col items-center space-y-2">
+        <!-- Logo y derechos -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi.svg" alt="PokeApp Logo"
+          class="w-40 h-10">
+        <p class="text-sm">&copy; 2025 PokeApp - Todos los derechos reservados</p>
+      </div>
+    </div>
+  </footer>
+</div>
