@@ -11,6 +11,7 @@
         </a>
       </div>
       <!-- Menú de navegación en desktop -->
+      @if (!isMobileMenuOpen()) {
       <nav class="hidden md:flex space-x-6">
         <a routerLink="/pokemon" class="px-4 py-2 rounded-md transition-all duration-300"
           [class.bg-red-700]="currentRoute() === '/pokemon'"
@@ -28,14 +29,17 @@
           [class.bg-red-700]="currentRoute() === '/colors'"
           [class.hover:bg-red-600]="currentRoute() !== '/colors'">Colors</a>
       </nav>
+      }
       <!-- Menú responsivo (solo ícono) -->
+      @if(isMobile()){
       <button class="md:hidden text-white text-2xl focus:outline-none hover:text-red-100 transition-colors"
         (click)="toggleMobileMenu()">
         &#9776;
       </button>
+      }
     </div>
-    <!-- Menú desplegable para móviles usando @if -->
-    @if (isMobileMenuOpen()) {
+    <!-- Menú desplegable para móviles -->
+    @if (isMobile() && isMobileMenuOpen()) {
     <div class="md:hidden bg-red-600 text-white mt-2 py-2 shadow-lg">
       <a routerLink="/pokemon" class="block px-6 py-2 rounded-md transition-all duration-300"
         [class.bg-red-800]="currentRoute() === '/pokemon'"
