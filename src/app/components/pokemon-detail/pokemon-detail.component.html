@@ -97,23 +97,6 @@
 }
 }
 @placeholder (minimum 2s) {
-<div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-100 to-gray-50">
-  <div class="relative w-48 h-48 flex items-center justify-center">
-    <div class="absolute w-full h-full rounded-full bg-blue-300 animate-energy-pulse"></div>
-    <div class="relative z-10 w-24 h-24 bg-yellow-300 rounded-full flex items-center justify-center">
-      <div class="w-16 h-16 bg-yellow-200 rounded-full animate-core-pulse"></div>
-    </div>
-  </div>
-  <div class="mt-8 text-center">
-    <p
-      class="text-xl font-bold text-gray-700 animate-typing overflow-hidden whitespace-nowrap border-r-4 border-r-blue-500">
-      Loading PokéData...
-    </p>
-  </div>
-</div>
-}
-@loading (after 500ms; minimum 3s) {
-
 <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-red-100 to-white">
   <div class="relative w-32 h-32 animate-pokeball">
     <div class="absolute top-0 left-0 w-full h-16 bg-red-500 rounded-t-full"></div>
@@ -131,6 +114,22 @@
     </p>
     <p class="text-sm text-gray-500">
       Loading data from PokéAPI
+    </p>
+  </div>
+</div>
+}
+@loading (after 500ms; minimum 3s) {
+<div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-100 to-gray-50">
+  <div class="relative w-48 h-48 flex items-center justify-center">
+    <div class="absolute w-full h-full rounded-full bg-blue-300 animate-energy-pulse"></div>
+    <div class="relative z-10 w-24 h-24 bg-yellow-300 rounded-full flex items-center justify-center">
+      <div class="w-16 h-16 bg-yellow-200 rounded-full animate-core-pulse"></div>
+    </div>
+  </div>
+  <div class="mt-8 text-center">
+    <p
+      class="text-xl font-bold text-gray-700 animate-typing overflow-hidden whitespace-nowrap border-r-4 border-r-blue-500">
+      Loading PokéData...
     </p>
   </div>
 </div>
