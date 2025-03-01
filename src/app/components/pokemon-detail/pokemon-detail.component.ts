@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { catchError, finalize, of } from 'rxjs';
 import { PokemonDetails } from '../../models/pokemon.model';
 import { PokemonService } from '../../services/pokemon.service';
 
@@ -11,36 +13,47 @@ import { PokemonService } from '../../services/pokemon.service';
 	styleUrl: './pokemon-detail.component.css',
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PokemonDetailComponent implements OnInit {
+export class PokemonDetailComponent {
 	private readonly pokemonService = inject(PokemonService);
 	private readonly route = inject(ActivatedRoute);
-	pokemon!: PokemonDetails;
-	isLoading = true;
-	error = false;
+	private readonly destroyRef = inject(DestroyRef);
 
-	ngOnInit(): void {
-		this.route.params.subscribe((params) => {
-			const id = params['id'];
-			this.loadPokemon(id);
+	// Estados reactivos
+	pokemon = signal<PokemonDetails | null>(null);
+	isLoading = signal(true);
+	error = signal(false);
+
+	constructor() {
+		effect((onCleanup) => {
+			const id = this.route.snapshot.params['id'];
+			this.loadPokemon(Number(id));
 		});
 	}
 
-	loadPokemon(id: number) {
-		this.isLoading = true;
-		this.pokemonService.getPokemonDetail(id).subscribe({
-			next: (data) => {
-				this.pokemon = data;
-				this.isLoading = false;
-			},
-			error: () => {
-				this.error = true;
-				this.isLoading = false;
-			}
-		});
+	private loadPokemon(id: number) {
+		this.isLoading.set(true);
+		this.error.set(false);
+
+		this.pokemonService
+			.getPokemonDetail(id)
+			.pipe(
+				takeUntilDestroyed(this.destroyRef),
+				finalize(() => this.isLoading.set(false)),
+				catchError(() => {
+					this.error.set(true);
+					return of(null);
+				})
+			)
+			.subscribe((data) => {
+				if (data) this.pokemon.set(data);
+			});
 	}
+
+	// Estado computado para @defer
+	isReady = computed(() => !!this.pokemon() && !this.isLoading() && !this.error());
 
 	getTypeColor(type: string): string {
-		const colors: { [key: string]: string } = {
+		const colors: Record<string, string> = {
 			fire: 'bg-orange-500',
 			water: 'bg-blue-500',
 			grass: 'bg-green-500',
@@ -65,5 +78,10 @@ export class PokemonDetailComponent implements OnInit {
 
 	statName(stat: string): string {
 		return stat.replace('special-', 'Sp. ').replace('-', ' ');
+	}
+
+	reload() {
+		const id = Number(this.route.snapshot.params['id']);
+		this.loadPokemon(id);
 	}
 }
