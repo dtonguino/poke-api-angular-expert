@@ -30,7 +30,7 @@ export class PokemonDetailComponent {
 		});
 	}
 
-	private loadPokemon(id: number) {
+	loadPokemon(id: number) {
 		this.isLoading.set(true);
 		this.error.set(false);
 

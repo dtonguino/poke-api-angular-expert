@@ -8,7 +8,7 @@ import { Pokemon, PokemonDetails } from '../models/pokemon.model';
 	providedIn: 'root'
 })
 export class PokemonService {
-	private apiUrl = 'https://pokeapi.co/api/v2';
+	public apiUrl = 'https://pokeapi.co/api/v2';
 	private imageUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork';
 
 	constructor(private http: HttpClient) {}
